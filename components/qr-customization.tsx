@@ -33,8 +33,8 @@ interface QRCustomizationProps {
   onDotStyleChange: (style: "square" | "rounded" | "dot") => void;
   markerBorder?: "square" | "rounded" | "circle";
   onMarkerBorderChange: (style: "square" | "rounded" | "circle") => void;
-  markerCenter?: "square" | "dot";
-  onMarkerCenterChange: (style: "square" | "dot") => void;
+  markerCenter?: "square" | "rounded" | "dot";
+  onMarkerCenterChange: (style: "square" | "rounded" | "dot") => void;
 }
 
 export function QRCustomization({
@@ -349,6 +349,30 @@ export function QRCustomization({
               </button>
               <button
                 type="button"
+                onClick={() => onMarkerCenterChange("rounded")}
+                className={getStyleChipClass(markerCenter === "rounded")}
+                aria-label="Rounded marker center"
+              >
+                <svg
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <rect
+                    x="5"
+                    y="5"
+                    width="14"
+                    height="14"
+                    rx="1"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                  />
+                  <rect x="9" y="9" width="6" height="6" rx="2" />
+                </svg>
+              </button>
+              <button
+                type="button"
                 onClick={() => onMarkerCenterChange("dot")}
                 className={getStyleChipClass(markerCenter === "dot")}
                 aria-label="Dot marker center"
@@ -458,12 +482,9 @@ export function QRCustomization({
                 </Label>
               </div>
               <div className="flex items-center gap-2">
-                <RadioGroupItem value="svg" id="format-svg" disabled />
-                <Label
-                  htmlFor="format-svg"
-                  className="cursor-pointer opacity-50"
-                >
-                  SVG (Vector) - Coming soon
+                <RadioGroupItem value="svg" id="format-svg" />
+                <Label htmlFor="format-svg" className="cursor-pointer">
+                  SVG (Vector)
                 </Label>
               </div>
             </RadioGroup>

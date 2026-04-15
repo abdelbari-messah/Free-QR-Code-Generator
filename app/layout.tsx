@@ -7,6 +7,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://qr.example.com'),
   title: 'Free QR Code Generator - Instant Custom QR Creation',
   description: 'Generate customizable QR codes instantly. Adjust colors, size, and add logos. Download as PNG or SVG. No signup required.',
   keywords: ['QR code', 'generator', 'free', 'custom', 'download', 'PNG', 'SVG'],
@@ -54,8 +55,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-background font-sans antialiased text-foreground">
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body
+        className="bg-background font-sans antialiased text-foreground"
+        suppressHydrationWarning
+      >
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card'
 type DotType = 'square' | 'dots' | 'rounded' | 'extra-rounded' | 'classy' | 'classy-rounded'
 type CornerSquareType = 'square' | 'dot' | 'extra-rounded'
 type CornerDotType = 'square' | 'dot'
+type MarkerCenterType = 'square' | 'dot' | 'rounded'
 
 function mapDotStyle(style: 'square' | 'rounded' | 'dot'): DotType {
   switch (style) {
@@ -34,10 +35,12 @@ function mapMarkerBorderStyle(style: 'square' | 'rounded' | 'circle'): CornerSqu
   }
 }
 
-function mapMarkerCenterStyle(style: 'square' | 'dot'): CornerDotType {
+function mapMarkerCenterStyle(style: 'square' | 'rounded' | 'dot'): MarkerCenterType {
   switch (style) {
     case 'square':
       return 'square'
+    case 'rounded':
+      return 'rounded'
     case 'dot':
       return 'dot'
     default:
@@ -56,7 +59,8 @@ interface QRPreviewProps {
   logoSize?: number
   dotStyle?: 'square' | 'rounded' | 'dot'
   markerBorder?: 'square' | 'rounded' | 'circle'
-  markerCenter?: 'square' | 'dot'
+  markerCenter?: 'square' | 'rounded' | 'dot'
+  onInstanceReady?: (instance: QRCodeStyling | null) => void
 }
 
 export function QRPreview({
@@ -71,13 +75,17 @@ export function QRPreview({
   dotStyle = 'square',
   markerBorder = 'square',
   markerCenter = 'square',
+  onInstanceReady,
 }: QRPreviewProps) {
   const qrRef = useRef<HTMLDivElement>(null)
   const qrInstanceRef = useRef<QRCodeStyling | null>(null)
   const renderScale = 4
 
   useEffect(() => {
-    if (!qrRef.current || !value) return
+    if (!qrRef.current || !value) {
+      onInstanceReady?.(null)
+      return
+    }
 
     const qr = new QRCodeStyling({
       width: size * renderScale,
@@ -94,7 +102,7 @@ export function QRPreview({
       },
       cornersDotOptions: {
         color: darkColor,
-        type: mapMarkerCenterStyle(markerCenter),
+        type: mapMarkerCenterStyle(markerCenter) as CornerDotType,
       },
       backgroundOptions: {
         color: lightColor,
@@ -112,6 +120,7 @@ export function QRPreview({
     })
 
     qrInstanceRef.current = qr
+    onInstanceReady?.(qr)
     
     // Clear previous content
     if (qrRef.current.firstChild) {
@@ -129,11 +138,12 @@ export function QRPreview({
     }
 
     return () => {
+      onInstanceReady?.(null)
       if (qrRef.current?.firstChild) {
         qrRef.current.removeChild(qrRef.current.firstChild)
       }
     }
-  }, [value, size, darkColor, lightColor, level, logo, logoSize, dotStyle, markerBorder, markerCenter, includeMargin])
+  }, [value, size, darkColor, lightColor, level, logo, logoSize, dotStyle, markerBorder, markerCenter, includeMargin, onInstanceReady])
 
   return (
     <Card className="flex h-full flex-col items-center justify-center bg-card p-8">
