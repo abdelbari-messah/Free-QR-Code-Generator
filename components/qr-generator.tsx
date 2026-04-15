@@ -131,8 +131,8 @@ export function QRGenerator() {
 
       {/* Main Content */}
       <main className="min-h-0 flex-1 px-4 py-3 sm:px-6 lg:px-8">
-        <div className="mx-auto h-full max-w-7xl">
-          <div className="grid h-full min-h-0 gap-4 lg:grid-cols-2">
+        <div className="mx-auto h-full w-full max-w-7xl">
+          <div className="grid h-full min-h-0 w-full items-stretch gap-4 lg:grid-cols-2">
             {/* Preview Section */}
             <div
               ref={qrRef}
@@ -155,7 +155,7 @@ export function QRGenerator() {
             </div>
 
             {/* Customization Section */}
-            <div className="flex min-h-0 flex-col">
+            <div className="flex min-h-0 w-full flex-col">
               <QRCustomization
                 value={value}
                 onValueChange={setValue}

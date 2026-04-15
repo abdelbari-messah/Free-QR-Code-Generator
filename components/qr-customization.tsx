@@ -96,9 +96,9 @@ export function QRCustomization({
   };
 
   return (
-    <Card className="flex h-full min-h-0 flex-col bg-card">
-      <Tabs defaultValue="link" className="flex h-full min-h-0 w-full flex-col">
-        <div className="w-full items-center justify-center px-4 pt-3">
+    <Card className="flex min-h-0 w-full flex-col bg-card">
+      <Tabs defaultValue="link" className="flex min-h-0 w-full flex-col">
+        <div className="w-full items-center justify-center px-4 pt-1">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="link" className="text-xs sm:text-sm">
               Link
@@ -149,7 +149,7 @@ export function QRCustomization({
         </TabsContent>
 
         {/* Style Tab */}
-        <TabsContent value="style" className="space-y-4 p-4">
+        <TabsContent value="style" className="space-y-3 p-4">
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="size-slider" className="text-sm font-medium">
@@ -495,8 +495,7 @@ export function QRCustomization({
         </TabsContent>
       </Tabs>
 
-      {/* Download Button */}
-      <div className="border-t border-border p-3 sm:p-4">
+      <div className="border-t border-border p-2 sm:p-2">
         <Button
           onClick={() => onDownload(format)}
           disabled={!value}
