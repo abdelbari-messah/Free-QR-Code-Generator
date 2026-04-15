@@ -12,7 +12,7 @@ import QRCodeStyling from "qr-code-styling";
 
 export function QRGenerator() {
   const [value, setValue] = useState("");
-  const [size, setSize] = useState(250);
+  const [downloadSize, setDownloadSize] = useState(250);
   const [darkColor, setDarkColor] = useState("#000000");
   const [lightColor, setLightColor] = useState("#ffffff");
   const [format, setFormat] = useState<"png" | "svg">("png");
@@ -31,6 +31,8 @@ export function QRGenerator() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const qrRef = useRef<HTMLDivElement>(null);
   const qrInstanceRef = useRef<QRCodeStyling | null>(null);
+  const previewSize = 220;
+  const renderScale = 4;
 
   const handleInstanceReady = useCallback((instance: QRCodeStyling | null) => {
     qrInstanceRef.current = instance;
@@ -49,6 +51,11 @@ export function QRGenerator() {
         return;
       }
 
+      await qrInstance.update({
+        width: downloadSize * renderScale,
+        height: downloadSize * renderScale,
+      });
+
       if (downloadFormat === "png") {
         await qrInstance.download({
           name: filename,
@@ -62,6 +69,14 @@ export function QRGenerator() {
       }
     } catch (error) {
       console.error("Error downloading QR code:", error);
+    } finally {
+      const qrInstance = qrInstanceRef.current;
+      if (qrInstance) {
+        await qrInstance.update({
+          width: previewSize * renderScale,
+          height: previewSize * renderScale,
+        });
+      }
     }
   };
 
@@ -79,16 +94,20 @@ export function QRGenerator() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div
+      className={`flex h-screen flex-col overflow-hidden ${
+        theme === "dark" ? "dotted-site-bg" : ""
+      }`}
+    >
       {/* Header */}
-      <header className="border-b border-border bg-card px-4 py-6 sm:px-6 lg:px-8">
+      <header className="border-b border-border bg-transparent px-4 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+              <h1 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
                 Free QR Code Generator
               </h1>
-              <p className="mt-2 text-muted-foreground">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Create beautiful, customized QR codes instantly. No signup
                 required. by Abdelbari Messah
               </p>
@@ -111,14 +130,17 @@ export function QRGenerator() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-8 lg:grid-cols-2">
+      <main className="min-h-0 flex-1 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto h-full max-w-7xl">
+          <div className="grid h-full min-h-0 gap-4 lg:grid-cols-2">
             {/* Preview Section */}
-            <div ref={qrRef} className="flex items-center justify-center">
+            <div
+              ref={qrRef}
+              className="flex min-h-0 items-center justify-center"
+            >
               <QRPreview
                 value={value}
-                size={size}
+                size={previewSize}
                 darkColor={darkColor}
                 lightColor={lightColor}
                 includeMargin={includeMargin}
@@ -133,12 +155,12 @@ export function QRGenerator() {
             </div>
 
             {/* Customization Section */}
-            <div className="flex flex-col">
+            <div className="flex min-h-0 flex-col">
               <QRCustomization
                 value={value}
                 onValueChange={setValue}
-                size={size}
-                onSizeChange={setSize}
+                size={downloadSize}
+                onSizeChange={setDownloadSize}
                 darkColor={darkColor}
                 onDarkColorChange={setDarkColor}
                 lightColor={lightColor}
@@ -165,15 +187,15 @@ export function QRGenerator() {
       </main>
 
       {/* Footer - Ad space */}
-      <footer className="border-t border-border bg-card">
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <footer className="bg-transparent">
+        <div className="mx-auto max-w-7xl px-2 py-3 sm:px-2 lg:px-2">
           <AdsSection />
-          <div className="border-t border-border pt-8">
+          <div className=" pt-3">
             <p className="text-center text-sm text-muted-foreground">
               © 2024 Free QR Code Generator. QR data is not stored on our
               servers.
             </p>
-            <p className="mt-2 text-center text-sm text-muted-foreground">
+            <p className="mt-1 text-center text-sm text-muted-foreground">
               <Link
                 href="/privacy-policy"
                 className="underline underline-offset-4 hover:text-foreground"

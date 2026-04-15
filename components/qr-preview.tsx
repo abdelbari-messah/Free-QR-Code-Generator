@@ -1,66 +1,76 @@
-'use client'
+"use client";
 
-import { useEffect, useRef } from 'react'
-import QRCodeStyling from 'qr-code-styling'
-import { Card } from '@/components/ui/card'
+import { useEffect, useRef } from "react";
+import QRCodeStyling from "qr-code-styling";
+import { Card } from "@/components/ui/card";
 
-type DotType = 'square' | 'dots' | 'rounded' | 'extra-rounded' | 'classy' | 'classy-rounded'
-type CornerSquareType = 'square' | 'dot' | 'extra-rounded'
-type CornerDotType = 'square' | 'dot'
-type MarkerCenterType = 'square' | 'dot' | 'rounded'
+type DotType =
+  | "square"
+  | "dots"
+  | "rounded"
+  | "extra-rounded"
+  | "classy"
+  | "classy-rounded";
+type CornerSquareType = "square" | "dot" | "extra-rounded";
+type CornerDotType = "square" | "dot";
+type MarkerCenterType = "square" | "dot" | "rounded";
 
-function mapDotStyle(style: 'square' | 'rounded' | 'dot'): DotType {
+function mapDotStyle(style: "square" | "rounded" | "dot"): DotType {
   switch (style) {
-    case 'square':
-      return 'square'
-    case 'rounded':
-      return 'rounded'
-    case 'dot':
-      return 'dots'
+    case "square":
+      return "square";
+    case "rounded":
+      return "rounded";
+    case "dot":
+      return "dots";
     default:
-      return 'square'
+      return "square";
   }
 }
 
-function mapMarkerBorderStyle(style: 'square' | 'rounded' | 'circle'): CornerSquareType {
+function mapMarkerBorderStyle(
+  style: "square" | "rounded" | "circle",
+): CornerSquareType {
   switch (style) {
-    case 'square':
-      return 'square'
-    case 'rounded':
-      return 'extra-rounded'
-    case 'circle':
-      return 'dot'
+    case "square":
+      return "square";
+    case "rounded":
+      return "extra-rounded";
+    case "circle":
+      return "dot";
     default:
-      return 'square'
+      return "square";
   }
 }
 
-function mapMarkerCenterStyle(style: 'square' | 'rounded' | 'dot'): MarkerCenterType {
+function mapMarkerCenterStyle(
+  style: "square" | "rounded" | "dot",
+): MarkerCenterType {
   switch (style) {
-    case 'square':
-      return 'square'
-    case 'rounded':
-      return 'rounded'
-    case 'dot':
-      return 'dot'
+    case "square":
+      return "square";
+    case "rounded":
+      return "rounded";
+    case "dot":
+      return "dot";
     default:
-      return 'square'
+      return "square";
   }
 }
 
 interface QRPreviewProps {
-  value: string
-  size: number
-  darkColor: string
-  lightColor: string
-  includeMargin: boolean
-  level: 'L' | 'M' | 'Q' | 'H'
-  logo?: string
-  logoSize?: number
-  dotStyle?: 'square' | 'rounded' | 'dot'
-  markerBorder?: 'square' | 'rounded' | 'circle'
-  markerCenter?: 'square' | 'rounded' | 'dot'
-  onInstanceReady?: (instance: QRCodeStyling | null) => void
+  value: string;
+  size: number;
+  darkColor: string;
+  lightColor: string;
+  includeMargin: boolean;
+  level: "L" | "M" | "Q" | "H";
+  logo?: string;
+  logoSize?: number;
+  dotStyle?: "square" | "rounded" | "dot";
+  markerBorder?: "square" | "rounded" | "circle";
+  markerCenter?: "square" | "rounded" | "dot";
+  onInstanceReady?: (instance: QRCodeStyling | null) => void;
 }
 
 export function QRPreview({
@@ -72,19 +82,19 @@ export function QRPreview({
   level,
   logo,
   logoSize = 25,
-  dotStyle = 'square',
-  markerBorder = 'square',
-  markerCenter = 'square',
+  dotStyle = "square",
+  markerBorder = "square",
+  markerCenter = "square",
   onInstanceReady,
 }: QRPreviewProps) {
-  const qrRef = useRef<HTMLDivElement>(null)
-  const qrInstanceRef = useRef<QRCodeStyling | null>(null)
-  const renderScale = 4
+  const qrRef = useRef<HTMLDivElement>(null);
+  const qrInstanceRef = useRef<QRCodeStyling | null>(null);
+  const renderScale = 4;
 
   useEffect(() => {
     if (!qrRef.current || !value) {
-      onInstanceReady?.(null)
-      return
+      onInstanceReady?.(null);
+      return;
     }
 
     const qr = new QRCodeStyling({
@@ -117,41 +127,55 @@ export function QRPreview({
         margin: 4,
       },
       margin: includeMargin ? 8 : 0,
-    })
+    });
 
-    qrInstanceRef.current = qr
-    onInstanceReady?.(qr)
-    
+    qrInstanceRef.current = qr;
+    onInstanceReady?.(qr);
+
     // Clear previous content
     if (qrRef.current.firstChild) {
-      qrRef.current.removeChild(qrRef.current.firstChild)
+      qrRef.current.removeChild(qrRef.current.firstChild);
     }
 
-    qr.append(qrRef.current)
+    qr.append(qrRef.current);
 
-    const renderedElement = qrRef.current.firstElementChild as HTMLElement | null
+    const renderedElement = qrRef.current
+      .firstElementChild as HTMLElement | null;
     if (renderedElement) {
-      renderedElement.style.width = `${size}px`
-      renderedElement.style.height = `${size}px`
-      renderedElement.style.maxWidth = '100%'
-      renderedElement.style.maxHeight = '100%'
+      renderedElement.style.width = `${size}px`;
+      renderedElement.style.height = `${size}px`;
+      renderedElement.style.maxWidth = "100%";
+      renderedElement.style.maxHeight = "100%";
     }
 
     return () => {
-      onInstanceReady?.(null)
+      onInstanceReady?.(null);
       if (qrRef.current?.firstChild) {
-        qrRef.current.removeChild(qrRef.current.firstChild)
+        qrRef.current.removeChild(qrRef.current.firstChild);
       }
-    }
-  }, [value, size, darkColor, lightColor, level, logo, logoSize, dotStyle, markerBorder, markerCenter, includeMargin, onInstanceReady])
+    };
+  }, [
+    value,
+    size,
+    darkColor,
+    lightColor,
+    level,
+    logo,
+    logoSize,
+    dotStyle,
+    markerBorder,
+    markerCenter,
+    includeMargin,
+    onInstanceReady,
+  ]);
 
   return (
-    <Card className="flex h-full flex-col items-center justify-center bg-card p-8">
-      <div className="rounded-lg border border-border bg-background p-8">
+    <Card className="flex h-full w-full flex-col items-center justify-center bg-card p-4 lg:p-5">
+      <div className="rounded-lg border border-border bg-background p-4 lg:p-5">
         <div
           ref={qrRef}
           className="flex items-center justify-center"
-          style={{ minHeight: size + 32, minWidth: size + 32 }}
+          style={{ minHeight: size + 16, minWidth: size + 16 }}
         >
           {!value && (
             <p className="text-center text-sm text-muted-foreground">
@@ -166,5 +190,5 @@ export function QRPreview({
         </p>
       )}
     </Card>
-  )
+  );
 }

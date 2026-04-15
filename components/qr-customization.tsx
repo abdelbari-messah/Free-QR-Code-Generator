@@ -65,7 +65,7 @@ export function QRCustomization({
   const [copied, setCopied] = useState(false);
 
   const getStyleChipClass = (isActive: boolean) =>
-    `flex h-11 w-11 items-center justify-center rounded-lg border transition-colors ${
+    `flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${
       isActive
         ? "border-foreground bg-foreground text-background"
         : "border-border bg-muted text-foreground hover:bg-muted/80"
@@ -96,9 +96,9 @@ export function QRCustomization({
   };
 
   return (
-    <Card className="flex flex-col bg-card">
-      <Tabs defaultValue="link" className="w-full">
-        <div className="w-full items-center justify-center px-4">
+    <Card className="flex h-full min-h-0 flex-col bg-card">
+      <Tabs defaultValue="link" className="flex h-full min-h-0 w-full flex-col">
+        <div className="w-full items-center justify-center px-4 pt-3">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="link" className="text-xs sm:text-sm">
               Link
@@ -119,7 +119,7 @@ export function QRCustomization({
         </div>
 
         {/* Link Tab */}
-        <TabsContent value="link" className="space-y-4 p-4 sm:p-6">
+        <TabsContent value="link" className="space-y-3 p-4">
           <div className="space-y-2">
             <Label htmlFor="qr-input">Enter URL or text</Label>
             <div className="flex gap-2">
@@ -149,11 +149,11 @@ export function QRCustomization({
         </TabsContent>
 
         {/* Style Tab */}
-        <TabsContent value="style" className="space-y-6 p-4 sm:p-6">
+        <TabsContent value="style" className="space-y-4 p-4">
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="size-slider" className="text-sm font-medium">
-                QR size
+                Download size
               </Label>
               <span className="text-xs text-muted-foreground">{size}px</span>
             </div>
@@ -166,7 +166,10 @@ export function QRCustomization({
               onValueChange={(values) => onSizeChange(values[0])}
               className="w-full"
             />
-            <div className="flex items-center gap-2">
+            <p className="text-xs text-muted-foreground">
+              Changes exported file size only. Preview stays fixed.
+            </p>
+            <div className="flex items-center gap-1.5">
               <Button
                 type="button"
                 variant="outline"
@@ -194,9 +197,9 @@ export function QRCustomization({
             </div>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             <Label className="text-sm font-medium">Dots</Label>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <button
                 type="button"
                 onClick={() => onDotStyleChange("square")}
@@ -266,9 +269,9 @@ export function QRCustomization({
             </div>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             <Label className="text-sm font-medium">Marker border</Label>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <button
                 type="button"
                 onClick={() => onMarkerBorderChange("square")}
@@ -320,9 +323,9 @@ export function QRCustomization({
             </div>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             <Label className="text-sm font-medium">Marker center</Label>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <button
                 type="button"
                 onClick={() => onMarkerCenterChange("square")}
@@ -400,7 +403,7 @@ export function QRCustomization({
         </TabsContent>
 
         {/* Color Tab */}
-        <TabsContent value="color" className="space-y-4 p-4 sm:p-6">
+        <TabsContent value="color" className="space-y-3 p-4">
           <ColorPicker
             value={darkColor}
             onChange={onDarkColorChange}
@@ -414,7 +417,7 @@ export function QRCustomization({
         </TabsContent>
 
         {/* Logo Tab */}
-        <TabsContent value="logo" className="space-y-4 p-4 sm:p-6">
+        <TabsContent value="logo" className="space-y-3 p-4">
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="logo-size-slider">Logo size: {logoSize}%</Label>
@@ -468,7 +471,7 @@ export function QRCustomization({
         </TabsContent>
 
         {/* Format Tab */}
-        <TabsContent value="format" className="space-y-4 p-4 sm:p-6">
+        <TabsContent value="format" className="space-y-3 p-4">
           <div className="space-y-3">
             <Label>File Format</Label>
             <RadioGroup
@@ -493,7 +496,7 @@ export function QRCustomization({
       </Tabs>
 
       {/* Download Button */}
-      <div className="border-t border-border p-4 sm:p-6">
+      <div className="border-t border-border p-3 sm:p-4">
         <Button
           onClick={() => onDownload(format)}
           disabled={!value}
