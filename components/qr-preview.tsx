@@ -229,11 +229,11 @@ export function QRPreview({
 
   return (
     <Card className="flex h-full w-full flex-col items-center justify-center bg-card p-4 lg:p-5">
-      <div className="rounded-lg border border-border bg-background p-4 lg:p-5">
+      <div className="w-full rounded-lg border border-border bg-background p-3 sm:p-4 lg:p-5">
         <div
           ref={qrRef}
           className="flex items-center justify-center"
-          style={{ minHeight: size + 16, minWidth: size + 16 }}
+          style={{ width: "100%", maxWidth: size + 16, marginInline: "auto" }}
         >
           {!value && (
             <p className="text-center text-sm text-muted-foreground">

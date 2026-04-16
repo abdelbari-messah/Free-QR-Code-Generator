@@ -48,7 +48,13 @@ export function QRGenerator() {
       | "classy"
       | "classy-rounded"
       | "extra-rounded",
-  ): "square" | "rounded" | "dots" | "classy" | "classy-rounded" | "extra-rounded" => {
+  ):
+    | "square"
+    | "rounded"
+    | "dots"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded" => {
     if (style === "dot") return "dots";
     return style;
   };
@@ -61,7 +67,13 @@ export function QRGenerator() {
       | "classy"
       | "classy-rounded"
       | "extra-rounded",
-  ): "square" | "dot" | "rounded" | "classy" | "classy-rounded" | "extra-rounded" => {
+  ):
+    | "square"
+    | "dot"
+    | "rounded"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded" => {
     if (style === "circle") return "dot";
     return style;
   };
@@ -74,7 +86,13 @@ export function QRGenerator() {
       | "classy"
       | "classy-rounded"
       | "extra-rounded",
-  ): "square" | "dot" | "rounded" | "classy" | "classy-rounded" | "extra-rounded" => {
+  ):
+    | "square"
+    | "dot"
+    | "rounded"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded" => {
     return style;
   };
 
@@ -152,15 +170,15 @@ export function QRGenerator() {
 
   return (
     <div
-      className={`flex h-screen flex-col overflow-hidden ${
+      className={`flex min-h-screen flex-col overflow-x-hidden ${
         theme === "dark" ? "dotted-site-bg" : ""
       }`}
     >
       {/* Header */}
-      <header className="border-b border-border bg-transparent px-4 py-3 sm:px-6 lg:px-8">
+      <header className="border-b border-border bg-transparent px-3 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-center justify-between">
-            <div>
+            <div className="min-w-0">
               <h1 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
                 Free QR Code Generator
               </h1>
@@ -187,13 +205,13 @@ export function QRGenerator() {
       </header>
 
       {/* Main Content */}
-      <main className="min-h-0 flex-1 px-4 py-3 sm:px-6 lg:px-8">
+      <main className="min-h-0 flex-1 px-3 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto h-full w-full max-w-7xl">
-          <div className="grid h-full min-h-0 w-full items-stretch gap-4 lg:grid-cols-2">
+          <div className="grid h-auto min-h-0 w-full gap-4 md:h-full md:items-stretch lg:grid-cols-2">
             {/* Preview Section */}
             <div
               ref={qrRef}
-              className="flex min-h-0 items-center justify-center"
+              className="flex min-h-60 items-center justify-center sm:min-h-72 md:min-h-0"
             >
               <QRPreview
                 value={value}
@@ -213,7 +231,7 @@ export function QRGenerator() {
             </div>
 
             {/* Customization Section */}
-            <div className="flex min-h-0 w-full flex-col">
+            <div className="flex w-full flex-col md:min-h-0">
               <QRCustomization
                 value={value}
                 onValueChange={setValue}

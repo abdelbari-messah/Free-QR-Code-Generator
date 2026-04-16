@@ -109,6 +109,8 @@ export function QRCustomization({
   onMarkerCenterChange,
 }: QRCustomizationProps) {
   const [copied, setCopied] = useState(false);
+  const tabTriggerClass =
+    "h-10 rounded-xl border border-transparent px-2 text-[11px] font-medium tracking-tight text-foreground/75 transition-all duration-200 hover:text-foreground data-[state=active]:border-border/60 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm sm:text-sm";
 
   const getTextChipClass = (isActive: boolean) =>
     `inline-flex h-10 items-center justify-center rounded-full border px-4 text-sm font-medium transition-colors ${
@@ -152,23 +154,23 @@ export function QRCustomization({
     <Card className="flex min-h-0 w-full flex-col bg-card">
       <Tabs
         defaultValue="link"
-        className="flex min-h-0 w-full flex-1 flex-col overflow-hidden"
+        className="flex w-full flex-col overflow-visible md:min-h-0 md:flex-1 md:overflow-hidden"
       >
         <div className="w-full items-center justify-center px-4 pt-1">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="link" className="text-xs sm:text-sm">
+          <TabsList className="grid h-auto w-full grid-cols-5 rounded-2xl border border-border/70 bg-muted/70 p-1.5 backdrop-blur-sm dark:border-white/10 dark:bg-white/10">
+            <TabsTrigger value="link" className={tabTriggerClass}>
               Link
             </TabsTrigger>
-            <TabsTrigger value="style" className="text-xs sm:text-sm">
+            <TabsTrigger value="style" className={tabTriggerClass}>
               Style
             </TabsTrigger>
-            <TabsTrigger value="color" className="text-xs sm:text-sm">
+            <TabsTrigger value="color" className={tabTriggerClass}>
               Color
             </TabsTrigger>
-            <TabsTrigger value="logo" className="text-xs sm:text-sm">
+            <TabsTrigger value="logo" className={tabTriggerClass}>
               Logo
             </TabsTrigger>
-            <TabsTrigger value="format" className="text-xs sm:text-sm">
+            <TabsTrigger value="format" className={tabTriggerClass}>
               Format
             </TabsTrigger>
           </TabsList>
@@ -177,7 +179,7 @@ export function QRCustomization({
         {/* Link Tab */}
         <TabsContent
           value="link"
-          className="min-h-0 space-y-3 overflow-y-auto p-4"
+          className="space-y-3 overflow-y-auto p-4 md:min-h-0"
         >
           <div className="space-y-2">
             <Label htmlFor="qr-input">Enter URL or text</Label>
@@ -210,7 +212,7 @@ export function QRCustomization({
         {/* Style Tab */}
         <TabsContent
           value="style"
-          className="min-h-0 space-y-3 overflow-y-auto p-4"
+          className="space-y-3 overflow-y-auto p-4 md:min-h-0"
         >
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
@@ -497,7 +499,7 @@ export function QRCustomization({
         {/* Color Tab */}
         <TabsContent
           value="color"
-          className="min-h-0 space-y-3 overflow-y-auto p-4"
+          className="space-y-3 overflow-y-auto p-4 md:min-h-0"
         >
           <ColorPicker
             value={darkColor}
@@ -519,7 +521,7 @@ export function QRCustomization({
         {/* Logo Tab */}
         <TabsContent
           value="logo"
-          className="min-h-0 space-y-3 overflow-y-auto p-4"
+          className="space-y-3 overflow-y-auto p-4 md:min-h-0"
         >
           <div className="space-y-4">
             <div className="space-y-2">
@@ -576,7 +578,7 @@ export function QRCustomization({
         {/* Format Tab */}
         <TabsContent
           value="format"
-          className="min-h-0 space-y-3 overflow-y-auto p-4"
+          className="space-y-3 overflow-y-auto p-4 md:min-h-0"
         >
           <div className="space-y-3">
             <Label>File Format</Label>
