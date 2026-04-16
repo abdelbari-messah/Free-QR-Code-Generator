@@ -18,6 +18,8 @@ interface QRCustomizationProps {
   onSizeChange: (size: number) => void;
   darkColor: string;
   onDarkColorChange: (color: string) => void;
+  cornerColor: string;
+  onCornerColorChange: (color: string) => void;
   lightColor: string;
   onLightColorChange: (color: string) => void;
   format: "png" | "svg";
@@ -29,12 +31,54 @@ interface QRCustomizationProps {
   onLogoChange: (logo: string | undefined) => void;
   logoSize?: number;
   onLogoSizeChange: (size: number) => void;
-  dotStyle?: "square" | "rounded" | "dot";
-  onDotStyleChange: (style: "square" | "rounded" | "dot") => void;
-  markerBorder?: "square" | "rounded" | "circle";
-  onMarkerBorderChange: (style: "square" | "rounded" | "circle") => void;
-  markerCenter?: "square" | "rounded" | "dot";
-  onMarkerCenterChange: (style: "square" | "rounded" | "dot") => void;
+  dotStyle?:
+    | "square"
+    | "rounded"
+    | "dot"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded";
+  onDotStyleChange: (
+    style:
+      | "square"
+      | "rounded"
+      | "dot"
+      | "classy"
+      | "classy-rounded"
+      | "extra-rounded",
+  ) => void;
+  markerBorder?:
+    | "square"
+    | "rounded"
+    | "circle"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded";
+  onMarkerBorderChange: (
+    style:
+      | "square"
+      | "rounded"
+      | "circle"
+      | "classy"
+      | "classy-rounded"
+      | "extra-rounded",
+  ) => void;
+  markerCenter?:
+    | "square"
+    | "rounded"
+    | "dot"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded";
+  onMarkerCenterChange: (
+    style:
+      | "square"
+      | "rounded"
+      | "dot"
+      | "classy"
+      | "classy-rounded"
+      | "extra-rounded",
+  ) => void;
 }
 
 export function QRCustomization({
@@ -44,6 +88,8 @@ export function QRCustomization({
   onSizeChange,
   darkColor,
   onDarkColorChange,
+  cornerColor,
+  onCornerColorChange,
   lightColor,
   onLightColorChange,
   format,
@@ -64,8 +110,15 @@ export function QRCustomization({
 }: QRCustomizationProps) {
   const [copied, setCopied] = useState(false);
 
-  const getStyleChipClass = (isActive: boolean) =>
-    `flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${
+  const getTextChipClass = (isActive: boolean) =>
+    `inline-flex h-10 items-center justify-center rounded-full border px-4 text-sm font-medium transition-colors ${
+      isActive
+        ? "border-foreground bg-foreground text-background"
+        : "border-border bg-muted text-foreground hover:bg-muted/80"
+    }`;
+
+  const getIconChipClass = (isActive: boolean) =>
+    `flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
       isActive
         ? "border-foreground bg-foreground text-background"
         : "border-border bg-muted text-foreground hover:bg-muted/80"
@@ -97,7 +150,10 @@ export function QRCustomization({
 
   return (
     <Card className="flex min-h-0 w-full flex-col bg-card">
-      <Tabs defaultValue="link" className="flex min-h-0 w-full flex-col">
+      <Tabs
+        defaultValue="link"
+        className="flex min-h-0 w-full flex-1 flex-col overflow-hidden"
+      >
         <div className="w-full items-center justify-center px-4 pt-1">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="link" className="text-xs sm:text-sm">
@@ -119,7 +175,10 @@ export function QRCustomization({
         </div>
 
         {/* Link Tab */}
-        <TabsContent value="link" className="space-y-3 p-4">
+        <TabsContent
+          value="link"
+          className="min-h-0 space-y-3 overflow-y-auto p-4"
+        >
           <div className="space-y-2">
             <Label htmlFor="qr-input">Enter URL or text</Label>
             <div className="flex gap-2">
@@ -149,7 +208,10 @@ export function QRCustomization({
         </TabsContent>
 
         {/* Style Tab */}
-        <TabsContent value="style" className="space-y-3 p-4">
+        <TabsContent
+          value="style"
+          className="min-h-0 space-y-3 overflow-y-auto p-4"
+        >
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="size-slider" className="text-sm font-medium">
@@ -199,83 +261,65 @@ export function QRCustomization({
 
           <div className="space-y-2">
             <Label className="text-sm font-medium">Dots</Label>
-            <div className="flex items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={() => onDotStyleChange("square")}
-                className={getStyleChipClass(dotStyle === "square")}
+                className={getTextChipClass(dotStyle === "square")}
                 aria-label="Square dots"
               >
-                <svg
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <rect x="3" y="3" width="4" height="4" />
-                  <rect x="10" y="3" width="4" height="4" />
-                  <rect x="17" y="3" width="4" height="4" />
-                  <rect x="3" y="10" width="4" height="4" />
-                  <rect x="10" y="10" width="4" height="4" />
-                  <rect x="17" y="10" width="4" height="4" />
-                  <rect x="3" y="17" width="4" height="4" />
-                  <rect x="10" y="17" width="4" height="4" />
-                  <rect x="17" y="17" width="4" height="4" />
-                </svg>
+                Square
               </button>
               <button
                 type="button"
                 onClick={() => onDotStyleChange("rounded")}
-                className={getStyleChipClass(dotStyle === "rounded")}
+                className={getTextChipClass(dotStyle === "rounded")}
                 aria-label="Rounded dots"
               >
-                <svg
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <rect x="3" y="3" width="4" height="4" rx="1.2" />
-                  <rect x="10" y="3" width="4" height="4" rx="1.2" />
-                  <rect x="17" y="3" width="4" height="4" rx="1.2" />
-                  <rect x="3" y="10" width="4" height="4" rx="1.2" />
-                  <rect x="10" y="10" width="4" height="4" rx="1.2" />
-                  <rect x="17" y="10" width="4" height="4" rx="1.2" />
-                  <rect x="3" y="17" width="4" height="4" rx="1.2" />
-                  <rect x="10" y="17" width="4" height="4" rx="1.2" />
-                  <rect x="17" y="17" width="4" height="4" rx="1.2" />
-                </svg>
+                Rounded
               </button>
               <button
                 type="button"
                 onClick={() => onDotStyleChange("dot")}
-                className={getStyleChipClass(dotStyle === "dot")}
+                className={getTextChipClass(dotStyle === "dot")}
                 aria-label="Circle dots"
               >
-                <svg
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <circle cx="5" cy="5" r="1.8" />
-                  <circle cx="12" cy="5" r="1.8" />
-                  <circle cx="19" cy="5" r="1.8" />
-                  <circle cx="5" cy="12" r="1.8" />
-                  <circle cx="12" cy="12" r="1.8" />
-                  <circle cx="19" cy="12" r="1.8" />
-                  <circle cx="5" cy="19" r="1.8" />
-                  <circle cx="12" cy="19" r="1.8" />
-                  <circle cx="19" cy="19" r="1.8" />
-                </svg>
+                Dots
+              </button>
+              <button
+                type="button"
+                onClick={() => onDotStyleChange("classy")}
+                className={getTextChipClass(dotStyle === "classy")}
+                aria-label="Classy dots"
+              >
+                Classy
+              </button>
+              <button
+                type="button"
+                onClick={() => onDotStyleChange("classy-rounded")}
+                className={getTextChipClass(dotStyle === "classy-rounded")}
+                aria-label="Classy rounded dots"
+              >
+                Classy Rounded
+              </button>
+              <button
+                type="button"
+                onClick={() => onDotStyleChange("extra-rounded")}
+                className={getTextChipClass(dotStyle === "extra-rounded")}
+                aria-label="Extra rounded dots"
+              >
+                Extra Rounded
               </button>
             </div>
           </div>
 
           <div className="space-y-2">
             <Label className="text-sm font-medium">Marker border</Label>
-            <div className="flex items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={() => onMarkerBorderChange("square")}
-                className={getStyleChipClass(markerBorder === "square")}
+                className={getIconChipClass(markerBorder === "square")}
                 aria-label="Square marker border"
               >
                 <svg
@@ -291,7 +335,7 @@ export function QRCustomization({
               <button
                 type="button"
                 onClick={() => onMarkerBorderChange("rounded")}
-                className={getStyleChipClass(markerBorder === "rounded")}
+                className={getIconChipClass(markerBorder === "rounded")}
                 aria-label="Rounded marker border"
               >
                 <svg
@@ -307,7 +351,7 @@ export function QRCustomization({
               <button
                 type="button"
                 onClick={() => onMarkerBorderChange("circle")}
-                className={getStyleChipClass(markerBorder === "circle")}
+                className={getIconChipClass(markerBorder === "circle")}
                 aria-label="Circle marker border"
               >
                 <svg
@@ -320,16 +364,40 @@ export function QRCustomization({
                   <circle cx="12" cy="12" r="8" />
                 </svg>
               </button>
+              <button
+                type="button"
+                onClick={() => onMarkerBorderChange("classy")}
+                className={getTextChipClass(markerBorder === "classy")}
+                aria-label="Classy marker border"
+              >
+                Classy
+              </button>
+              <button
+                type="button"
+                onClick={() => onMarkerBorderChange("classy-rounded")}
+                className={getTextChipClass(markerBorder === "classy-rounded")}
+                aria-label="Classy rounded marker border"
+              >
+                Classy Rounded
+              </button>
+              <button
+                type="button"
+                onClick={() => onMarkerBorderChange("extra-rounded")}
+                className={getTextChipClass(markerBorder === "extra-rounded")}
+                aria-label="Extra rounded marker border"
+              >
+                Extra Rounded
+              </button>
             </div>
           </div>
 
           <div className="space-y-2">
             <Label className="text-sm font-medium">Marker center</Label>
-            <div className="flex items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={() => onMarkerCenterChange("square")}
-                className={getStyleChipClass(markerCenter === "square")}
+                className={getIconChipClass(markerCenter === "square")}
                 aria-label="Square marker center"
               >
                 <svg
@@ -353,7 +421,7 @@ export function QRCustomization({
               <button
                 type="button"
                 onClick={() => onMarkerCenterChange("rounded")}
-                className={getStyleChipClass(markerCenter === "rounded")}
+                className={getIconChipClass(markerCenter === "rounded")}
                 aria-label="Rounded marker center"
               >
                 <svg
@@ -377,7 +445,7 @@ export function QRCustomization({
               <button
                 type="button"
                 onClick={() => onMarkerCenterChange("dot")}
-                className={getStyleChipClass(markerCenter === "dot")}
+                className={getIconChipClass(markerCenter === "dot")}
                 aria-label="Dot marker center"
               >
                 <svg
@@ -398,16 +466,48 @@ export function QRCustomization({
                   <circle cx="12" cy="12" r="3" />
                 </svg>
               </button>
+              <button
+                type="button"
+                onClick={() => onMarkerCenterChange("classy")}
+                className={getTextChipClass(markerCenter === "classy")}
+                aria-label="Classy marker center"
+              >
+                Classy
+              </button>
+              <button
+                type="button"
+                onClick={() => onMarkerCenterChange("classy-rounded")}
+                className={getTextChipClass(markerCenter === "classy-rounded")}
+                aria-label="Classy rounded marker center"
+              >
+                Classy Rounded
+              </button>
+              <button
+                type="button"
+                onClick={() => onMarkerCenterChange("extra-rounded")}
+                className={getTextChipClass(markerCenter === "extra-rounded")}
+                aria-label="Extra rounded marker center"
+              >
+                Extra Rounded
+              </button>
             </div>
           </div>
         </TabsContent>
 
         {/* Color Tab */}
-        <TabsContent value="color" className="space-y-3 p-4">
+        <TabsContent
+          value="color"
+          className="min-h-0 space-y-3 overflow-y-auto p-4"
+        >
           <ColorPicker
             value={darkColor}
             onChange={onDarkColorChange}
-            label="Foreground (QR pattern)"
+            label="Dots"
+          />
+          <ColorPicker
+            value={cornerColor}
+            onChange={onCornerColorChange}
+            label="Corners"
           />
           <ColorPicker
             value={lightColor}
@@ -417,7 +517,10 @@ export function QRCustomization({
         </TabsContent>
 
         {/* Logo Tab */}
-        <TabsContent value="logo" className="space-y-3 p-4">
+        <TabsContent
+          value="logo"
+          className="min-h-0 space-y-3 overflow-y-auto p-4"
+        >
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="logo-size-slider">Logo size: {logoSize}%</Label>
@@ -471,7 +574,10 @@ export function QRCustomization({
         </TabsContent>
 
         {/* Format Tab */}
-        <TabsContent value="format" className="space-y-3 p-4">
+        <TabsContent
+          value="format"
+          className="min-h-0 space-y-3 overflow-y-auto p-4"
+        >
           <div className="space-y-3">
             <Label>File Format</Label>
             <RadioGroup

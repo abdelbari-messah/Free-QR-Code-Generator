@@ -11,11 +11,18 @@ type DotType =
   | "extra-rounded"
   | "classy"
   | "classy-rounded";
-type CornerSquareType = "square" | "dot" | "extra-rounded";
-type CornerDotType = "square" | "dot";
-type MarkerCenterType = "square" | "dot" | "rounded";
+type CornerSquareType = "square" | "dot" | DotType;
+type CornerDotType = "square" | "dot" | DotType;
 
-function mapDotStyle(style: "square" | "rounded" | "dot"): DotType {
+function mapDotStyle(
+  style:
+    | "square"
+    | "rounded"
+    | "dot"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded",
+): DotType {
   switch (style) {
     case "square":
       return "square";
@@ -23,13 +30,25 @@ function mapDotStyle(style: "square" | "rounded" | "dot"): DotType {
       return "rounded";
     case "dot":
       return "dots";
+    case "classy":
+      return "classy";
+    case "classy-rounded":
+      return "classy-rounded";
+    case "extra-rounded":
+      return "extra-rounded";
     default:
       return "square";
   }
 }
 
 function mapMarkerBorderStyle(
-  style: "square" | "rounded" | "circle",
+  style:
+    | "square"
+    | "rounded"
+    | "circle"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded",
 ): CornerSquareType {
   switch (style) {
     case "square":
@@ -38,14 +57,26 @@ function mapMarkerBorderStyle(
       return "extra-rounded";
     case "circle":
       return "dot";
+    case "classy":
+      return "classy";
+    case "classy-rounded":
+      return "classy-rounded";
+    case "extra-rounded":
+      return "extra-rounded";
     default:
       return "square";
   }
 }
 
 function mapMarkerCenterStyle(
-  style: "square" | "rounded" | "dot",
-): MarkerCenterType {
+  style:
+    | "square"
+    | "rounded"
+    | "dot"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded",
+): CornerDotType {
   switch (style) {
     case "square":
       return "square";
@@ -53,6 +84,12 @@ function mapMarkerCenterStyle(
       return "rounded";
     case "dot":
       return "dot";
+    case "classy":
+      return "classy";
+    case "classy-rounded":
+      return "classy-rounded";
+    case "extra-rounded":
+      return "extra-rounded";
     default:
       return "square";
   }
@@ -62,14 +99,33 @@ interface QRPreviewProps {
   value: string;
   size: number;
   darkColor: string;
+  cornerColor: string;
   lightColor: string;
   includeMargin: boolean;
   level: "L" | "M" | "Q" | "H";
   logo?: string;
   logoSize?: number;
-  dotStyle?: "square" | "rounded" | "dot";
-  markerBorder?: "square" | "rounded" | "circle";
-  markerCenter?: "square" | "rounded" | "dot";
+  dotStyle?:
+    | "square"
+    | "rounded"
+    | "dot"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded";
+  markerBorder?:
+    | "square"
+    | "rounded"
+    | "circle"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded";
+  markerCenter?:
+    | "square"
+    | "rounded"
+    | "dot"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded";
   onInstanceReady?: (instance: QRCodeStyling | null) => void;
 }
 
@@ -77,6 +133,7 @@ export function QRPreview({
   value,
   size,
   darkColor,
+  cornerColor,
   lightColor,
   includeMargin,
   level,
@@ -107,12 +164,12 @@ export function QRPreview({
         type: mapDotStyle(dotStyle),
       },
       cornersSquareOptions: {
-        color: darkColor,
+        color: cornerColor,
         type: mapMarkerBorderStyle(markerBorder),
       },
       cornersDotOptions: {
-        color: darkColor,
-        type: mapMarkerCenterStyle(markerCenter) as CornerDotType,
+        color: cornerColor,
+        type: mapMarkerCenterStyle(markerCenter),
       },
       backgroundOptions: {
         color: lightColor,
@@ -158,6 +215,7 @@ export function QRPreview({
     value,
     size,
     darkColor,
+    cornerColor,
     lightColor,
     level,
     logo,

@@ -14,24 +14,30 @@ export function QRGenerator() {
   const [value, setValue] = useState("");
   const [downloadSize, setDownloadSize] = useState(250);
   const [darkColor, setDarkColor] = useState("#000000");
+  const [cornerColor, setCornerColor] = useState("#000000");
   const [lightColor, setLightColor] = useState("#ffffff");
   const [format, setFormat] = useState<"png" | "svg">("png");
   const [includeMargin, setIncludeMargin] = useState(true);
   const [logo, setLogo] = useState<string | undefined>(undefined);
   const [logoSize, setLogoSize] = useState(25);
-  const [dotStyle, setDotStyle] = useState<"square" | "rounded" | "dot">(
-    "square",
-  );
+  const [dotStyle, setDotStyle] = useState<
+    "square" | "rounded" | "dot" | "classy" | "classy-rounded" | "extra-rounded"
+  >("square");
   const [markerBorder, setMarkerBorder] = useState<
-    "square" | "rounded" | "circle"
+    | "square"
+    | "rounded"
+    | "circle"
+    | "classy"
+    | "classy-rounded"
+    | "extra-rounded"
   >("square");
   const [markerCenter, setMarkerCenter] = useState<
-    "square" | "rounded" | "dot"
+    "square" | "rounded" | "dot" | "classy" | "classy-rounded" | "extra-rounded"
   >("square");
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const qrRef = useRef<HTMLDivElement>(null);
   const qrInstanceRef = useRef<QRCodeStyling | null>(null);
-  const previewSize = 220;
+  const previewSize = 300;
   const renderScale = 4;
 
   const handleInstanceReady = useCallback((instance: QRCodeStyling | null) => {
@@ -142,6 +148,7 @@ export function QRGenerator() {
                 value={value}
                 size={previewSize}
                 darkColor={darkColor}
+                cornerColor={cornerColor}
                 lightColor={lightColor}
                 includeMargin={includeMargin}
                 level="M"
@@ -163,6 +170,8 @@ export function QRGenerator() {
                 onSizeChange={setDownloadSize}
                 darkColor={darkColor}
                 onDarkColorChange={setDarkColor}
+                cornerColor={cornerColor}
+                onCornerColorChange={setCornerColor}
                 lightColor={lightColor}
                 onLightColorChange={setLightColor}
                 format={format}
